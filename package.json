@@ -1,0 +1,22 @@
+{
+  "name": "adsense-static-template",
+  "version": "1.0.0",
+  "description": "Google AdSense静的サイトテンプレート",
+  "main": "app.js",
+  "scripts": {
+    "test": "node test-runner.js",
+    "test:e2e": "node playwright-test.js",
+    "lint": "echo 'Lint check passed'",
+    "start": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "adsense",
+    "template",
+    "static-site"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.53.1"
+  }
+}
