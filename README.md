@@ -47,13 +47,41 @@ npm start
 3. Settings > Pages > Source を "Deploy from a branch" に設定
 4. Branch を "main" に、フォルダを "/public" に設定
 
-### Cloudflare Pagesへのデプロイ
+### Cloudflare Pagesへのデプロイ（GitHub Actions使用）
 
-1. Cloudflareにログイン
-2. "Pages" > "Create a project" を選択
-3. GitHubアカウントを接続してリポジトリを選択
-4. Build output directory を "public" に設定
-5. デプロイ
+#### 初回セットアップ
+
+1. Cloudflareアカウントの準備
+   - [Cloudflare](https://www.cloudflare.com/) にログイン
+   - 右上のプロフィール > "My Profile" > "API Tokens" を開く
+   - "Create Token" をクリック
+   - "Custom token" を選択して以下の権限を設定：
+     - Account: Cloudflare Pages:Edit
+     - Zone: Zone:Read
+   - トークンを作成してコピー
+   - https://dash.cloudflare.com/945c6b2b8ad75e9da21e7aa16495d181/pages/new/provider/github からプロジェクトをインポートし、/public ディレクトリを選択
+
+2. CloudflareアカウントIDの取得
+   - Cloudflareダッシュボードの右サイドバーからAccount IDをコピー
+
+3. GitHubリポジトリのシークレット設定
+   - GitHubリポジトリの "Settings" > "Secrets and variables" > "Actions" を開く
+   - "New repository secret" をクリックして以下を追加：
+     - `CLOUDFLARE_API_TOKEN`: 手順1で作成したトークン
+     - `CLOUDFLARE_ACCOUNT_ID`: 手順2で取得したアカウントID
+
+4. プロジェクト名の設定
+   - `.github/workflows/deploy.yml` の51行目 `projectName: my-project-name` を任意のプロジェクト名に変更
+
+#### デプロイ
+
+mainブランチにpushすると自動的にデプロイされます：
+
+```bash
+git add .
+git commit -m "Deploy to Cloudflare Pages"
+git push origin main
+```
 
 ## ディレクトリ構造
 
