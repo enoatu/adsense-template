@@ -3,98 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>サイトタイトル | キャッチフレーズ</title>
-    <meta name="description" content="ここに150文字程度でサービスの魅力的な説明を記載。検索結果に表示されるため、ユーザーの興味を引く内容にする。">
-    <meta name="keywords" content="キーワード1, キーワード2, キーワード3, キーワード4, キーワード5">
-    <meta name="author" content="サイト運営者名">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://プロジェクト名.servuza.com/">
-    
-    <!-- Open Graph メタタグ -->
-    <meta property="og:title" content="サイトタイトル | キャッチフレーズ">
-    <meta property="og:description" content="ここに150文字程度でサービスの魅力的な説明を記載">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://プロジェクト名.servuza.com/">
-    <meta property="og:image" content="https://プロジェクト名.servuza.com/og-image.jpg">
-    <meta property="og:site_name" content="サイト名">
-    <meta property="og:locale" content="ja_JP">
-    
-    <!-- Twitter Card メタタグ -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="サイトタイトル | キャッチフレーズ">
-    <meta name="twitter:description" content="ここに150文字程度でサービスの魅力的な説明を記載">
-    <meta name="twitter:image" content="https://プロジェクト名.servuza.com/twitter-card.jpg">
-    <meta name="twitter:site" content="@twitter_handle">
-    
-    <!-- ファビコンとアイコン -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <meta name="theme-color" content="#ffffff">
-    
-    <!-- プリコネクト -->
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
-    <link rel="preconnect" href="https://googleads.g.doubleclick.net">
-    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
-    <link rel="dns-prefetch" href="https://googleads.g.doubleclick.net">
-    
+    <title>Pixel Art Editor</title>
+    <meta name="description" content="A pixel art editor and animator that runs in your browser.">
     <link rel="stylesheet" href="style.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5219174848507063" crossorigin="anonymous"></script>
-    
-    <!-- JSON-LD 構造化データ -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "サイト名",
-        "alternateName": "サイトの別名",
-        "url": "https://プロジェクト名.servuza.com/",
-        "description": "サービスの詳細な説明",
-        "publisher": {
-            "@type": "Organization",
-            "name": "組織名",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://プロジェクト名.servuza.com/logo.png"
-            }
-        },
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "https://プロジェクト名.servuza.com/search?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-        }
-    }
-    </script>
 </head>
 <body>
     <header>
-        <h1>サイト名<span class="subtitle">サブタイトル</span></h1>
-        <nav class="main-nav">
-            <a href="index.html">ホーム</a>
-        </nav>
+        <h1>Pixel Art Editor</h1>
     </header>
 
     <main>
-        <div class="hero-section">
-            <h2>キャッチコピー</h2>
-            <p>サービスの説明</p>
-        </div>
-
-        <!-- メインコンテンツエリア -->
         <div id="app-container">
-            <!-- アプリケーション固有のコンテンツはここに -->
+            <div id="toolbar">
+                <div class="tool-group">
+                    <label for="pen-color">Color:</label>
+                    <input type="color" id="pen-color" value="#000000">
+                </div>
+                <div class="tool-group">
+                    <button id="pen-tool" class="tool active">Pen</button>
+                    <button id="eraser-tool" class="tool">Eraser</button>
+                </div>
+                <div class="tool-group">
+                    <label for="canvas-size">Canvas Size:</label>
+                    <select id="canvas-size">
+                        <option value="16">16x16</option>
+                        <option value="32" selected>32x32</option>
+                        <option value="64">64x64</option>
+                    </select>
+                </div>
+                <div class="tool-group">
+                    <button id="clear-canvas">Clear</button>
+                </div>
+            </div>
+            <div id="canvas-container">
+                <canvas id="pixel-canvas"></canvas>
+            </div>
+            <div id="animation-controls">
+                <h2>Animation</h2>
+                <div id="frame-list"></div>
+                <button id="add-frame">Add Frame</button>
+                <div class="tool-group">
+                    <label for="frame-rate">FPS:</label>
+                    <input type="range" id="frame-rate" min="1" max="24" value="12">
+                    <span id="frame-rate-value">12</span>
+                </div>
+                <div id="preview-container">
+                    <canvas id="preview-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+        <div id="export-options">
+            <h2>Export</h2>
+            <button id="export-png">Export as PNG</button>
+            <button id="export-gif">Export as GIF</button>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2024 サイト名. All rights reserved.</p>
+        <p>&copy; 2024 Pixel Art Editor. All rights reserved.</p>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
