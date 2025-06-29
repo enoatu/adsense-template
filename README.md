@@ -95,6 +95,35 @@ adsense-template/
 └── README.md           # このファイル
 ```
 
+## SEO最適化ガイド
+
+このテンプレートには包括的なSEO対策が組み込まれています：
+
+### 1. メタタグの最適化
+- Open Graph tags（Facebook、LinkedIn等でのシェア最適化）
+- Twitter Card tags（Twitterでのシェア最適化）
+- 適切なmeta description（150文字程度で検索結果に表示）
+- キーワードメタタグ（5-8個の関連キーワード）
+
+### 2. 構造化データ（JSON-LD）
+- Schema.org準拠のWebSiteマークアップを実装済み
+- 検索エンジンがサイト内容を理解しやすく構造化
+
+### 3. 検索エンジン最適化ファイル
+- `robots.txt`: 検索エンジンのクローリング指示
+- `sitemap.xml`: サイト構造を検索エンジンに伝達
+- `site.webmanifest`: PWA対応とモバイル最適化
+
+### 4. パフォーマンス最適化
+- DNS prefetch設定でAdSense読み込み高速化
+- 適切なpreconnect設定
+
+### カスタマイズ時のSEO注意点
+1. **プロジェクト名の更新**: すべてのファイルで「プロジェクト名」を実際のドメイン名に変更
+2. **メタ情報の更新**: タイトル、説明文、キーワードを実際のサービス内容に合わせて更新
+3. **画像の最適化**: og-image.jpg、twitter-card.jpgなどのソーシャル画像を用意
+4. **ファビコンの設置**: favicon.ico、apple-touch-icon.png等のアイコンファイルを設置
+
 ## 注意事項
 
 - Google AdSenseの利用には審査が必要です

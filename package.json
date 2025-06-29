@@ -6,7 +6,6 @@
   "scripts": {
     "test": "node test-runner.js",
     "test:e2e": "node playwright-test.js",
-    "lint": "echo 'Lint check passed'",
     "start": "python3 -m http.server 8000"
   },
   "keywords": [

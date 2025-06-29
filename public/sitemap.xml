@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+    <!-- ホームページ -->
+    <url>
+        <loc>https://プロジェクト名.servuza.com/</loc>
+        <lastmod>2024-01-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <!-- その他の重要なページを追加 -->
+    <!-- 例: About ページ -->
+    <!--
+    <url>
+        <loc>https://プロジェクト名.servuza.com/about</loc>
+        <lastmod>2024-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    -->
+    
+    <!-- 例: サービスページ -->
+    <!--
+    <url>
+        <loc>https://プロジェクト名.servuza.com/services</loc>
+        <lastmod>2024-01-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    -->
+    
+    <!-- 例: お問い合わせページ -->
+    <!--
+    <url>
+        <loc>https://プロジェクト名.servuza.com/contact</loc>
+        <lastmod>2024-01-01</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    -->
+</urlset>
