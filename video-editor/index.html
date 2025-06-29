@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブラウザ動画エディタ - WebAssembly Video Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">ブラウザ動画エディタ</h1>
+            <p class="text-gray-600">FFmpeg.wasmを使用した高速動画編集ツール</p>
+        </header>
+
+        <div id="loading" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <div class="flex items-center">
+                    <svg class="animate-spin h-8 w-8 mr-3 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span id="loadingText">処理中...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4">動画アップロード</h2>
+                <div id="dropZone" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors cursor-pointer">
+                    <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <p class="text-gray-600 mb-2">動画ファイルをドラッグ＆ドロップ</p>
+                    <p class="text-sm text-gray-500">または</p>
+                    <button class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                        ファイルを選択
+                    </button>
+                    <input type="file" id="fileInput" accept="video/*" class="hidden">
+                </div>
+
+                <div id="videoInfo" class="mt-6 hidden">
+                    <h3 class="text-lg font-semibold mb-2">動画情報</h3>
+                    <div class="bg-gray-50 p-4 rounded">
+                        <p class="text-sm text-gray-700"><span class="font-medium">ファイル名:</span> <span id="fileName"></span></p>
+                        <p class="text-sm text-gray-700"><span class="font-medium">サイズ:</span> <span id="fileSize"></span></p>
+                        <p class="text-sm text-gray-700"><span class="font-medium">長さ:</span> <span id="duration"></span></p>
+                        <p class="text-sm text-gray-700"><span class="font-medium">解像度:</span> <span id="resolution"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-semibold mb-4">プレビュー</h2>
+                <div class="relative bg-black rounded-lg overflow-hidden" style="padding-bottom: 56.25%;">
+                    <video id="videoPreview" class="absolute inset-0 w-full h-full" controls></video>
+                    <div id="noVideoMessage" class="absolute inset-0 flex items-center justify-center text-gray-500">
+                        <p>動画をアップロードしてください</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="editingTools" class="mt-8 bg-white rounded-lg shadow-lg p-6 hidden">
+            <h2 class="text-2xl font-semibold mb-6">編集ツール</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-lg font-medium mb-3">トリミング</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">開始時間</label>
+                            <input type="text" id="startTime" placeholder="00:00:00" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">終了時間</label>
+                            <input type="text" id="endTime" placeholder="00:00:00" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <button id="trimButton" class="mt-3 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                        トリミング実行
+                    </button>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">形式変換</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <button class="convertButton px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors" data-format="mp4">
+                            MP4
+                        </button>
+                        <button class="convertButton px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors" data-format="webm">
+                            WebM
+                        </button>
+                        <button class="convertButton px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors" data-format="avi">
+                            AVI
+                        </button>
+                        <button class="convertButton px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors" data-format="mov">
+                            MOV
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">圧縮設定</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">品質</label>
+                            <select id="quality" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="high">高品質</option>
+                                <option value="medium" selected>標準</option>
+                                <option value="low">低品質（ファイルサイズ優先）</option>
+                            </select>
+                        </div>
+                        <button id="compressButton" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                            圧縮実行
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-medium mb-3">エクスポート</h3>
+                    <button id="exportButton" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium">
+                        動画をダウンロード
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.7/dist/ffmpeg.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/util.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
