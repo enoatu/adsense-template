@@ -22,12 +22,17 @@
   - ターゲットユーザーの明確化
   - 提供する価値の定義
   - 技術的実現可能性の検証
+  - プロジェクト名.servuza.com でのホスティングを前提とする
 
 ### 2. プロジェクト初期設定
 - [ ] **テンプレートのコピー**
   ```bash
   cp -r adsense-template/ ../[新プロジェクト名]/
   cd ../[新プロジェクト名]/
+  rm -rf .git
+  git init
+  git add .
+  git commit -m "Initial commit"
   ```
 
 ### 3. ドキュメント整備
