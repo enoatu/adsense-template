@@ -71,7 +71,7 @@ npm start
      - `CLOUDFLARE_ACCOUNT_ID`: 手順2で取得したアカウントID
 
 4. プロジェクト名の設定
-   - `.github/workflows/deploy.yml` の51行目 `projectName: my-project-name` を任意のプロジェクト名に変更
+   - `.github/workflows/deploy.yml` の51行目 `projectName: my-project-name` をcloudflareのプロジェクト名に変更!!重要!!
 
 #### デプロイ
 
